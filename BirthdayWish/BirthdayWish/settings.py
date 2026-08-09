@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get(
     'DJANGO_SECRET_KEY',
-    'django-insecure-dev-only-change-in-production-birthday-wish'
+    'django-insecure-dev-only-change-in-production'
 )
 
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('1', 'true', 'yes')
@@ -18,11 +18,18 @@ ALLOWED_HOSTS = [
     h.strip().strip('"').strip("'")
     for h in os.environ.get(
         'DJANGO_ALLOWED_HOSTS',
-        'localhost,127.0.0.1,192.168.43.170',
-        '*'
+        'localhost,127.0.0.1,192.168.43.170,.onrender.com,.vercel.app'
     ).split(',')
     if h.strip()
 ]
+
+# Trust Render HTTPS origins when provided (comma-separated full https:// hosts)
+CSRF_TRUSTED_ORIGINS = [
+    o.strip()
+    for o in os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',')
+    if o.strip()
+]
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
