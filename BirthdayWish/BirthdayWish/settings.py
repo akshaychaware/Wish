@@ -19,6 +19,7 @@ ALLOWED_HOSTS = [
     for h in os.environ.get(
         'DJANGO_ALLOWED_HOSTS',
         'localhost,127.0.0.1,192.168.43.170',
+        '*'
     ).split(',')
     if h.strip()
 ]
