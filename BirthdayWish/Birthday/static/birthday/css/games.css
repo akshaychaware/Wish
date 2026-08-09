@@ -1,0 +1,30 @@
+/* Mini games UI */
+.games-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.games-tab {
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid transparent;
+  transition: color 0.3s, background 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.games-tab:hover {
+  color: var(--text);
+  transform: translateY(-2px);
+}
+
+.games-tab.is-active {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.55), rgba(236, 72, 153, 0.45));
+  border-color: var(--glass-border);
+  box-shadow: var(--glow-pink);
+}

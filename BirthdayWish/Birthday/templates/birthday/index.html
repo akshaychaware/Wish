@@ -1,0 +1,464 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0B1026">
+  <meta name="description" content="A cinematic, magical birthday surprise — dreamy, romantic, and made just for you.">
+  <meta name="robots" content="index,follow">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Happy Birthday ❤️ — A Magical Surprise">
+  <meta property="og:description" content="Sit back, smile… this little universe was created just for you.">
+  <meta property="og:image" content="{% static 'birthday/icons/og-cover.svg' %}">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Happy Birthday ❤️ — A Magical Surprise">
+  <meta name="twitter:description" content="A premium interactive birthday experience filled with magic, games, and love.">
+  <meta name="twitter:image" content="{% static 'birthday/icons/og-cover.svg' %}">
+
+  <link rel="icon" href="{% static 'birthday/icons/favicon.svg' %}" type="image/svg+xml">
+  <link rel="manifest" href="{% url 'birthday:manifest' %}">
+  <link rel="apple-touch-icon" href="{% static 'birthday/icons/favicon.svg' %}">
+
+  <title>Happy Birthday ❤️ — Magical Surprise</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Open+Sans:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static 'birthday/css/variables.css' %}">
+  <link rel="stylesheet" href="{% static 'birthday/css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'birthday/css/loader.css' %}">
+  <link rel="stylesheet" href="{% static 'birthday/css/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'birthday/css/sections.css' %}">
+  <link rel="stylesheet" href="{% static 'birthday/css/games.css' %}">
+  <link rel="stylesheet" href="{% static 'birthday/css/components.css' %}">
+  <link rel="stylesheet" href="{% static 'birthday/css/animations.css' %}">
+  <link rel="stylesheet" href="{% static 'birthday/css/responsive.css' %}">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Birthday Surprise — Magical Universe",
+    "description": "An immersive interactive birthday surprise website.",
+    "applicationCategory": "EntertainmentApplication",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor" aria-hidden="true">
+    <div class="cursor__heart"></div>
+    <div class="cursor__ring"></div>
+  </div>
+  <canvas id="cursor-trail" class="cursor-trail" aria-hidden="true"></canvas>
+
+  <!-- Magical loader -->
+  <div id="loader" class="loader" role="status" aria-live="polite" aria-label="Loading surprise">
+    <div class="loader__aurora" aria-hidden="true"></div>
+    <canvas id="loader-particles" class="loader__particles" aria-hidden="true"></canvas>
+    <div class="loader__content">
+      <div class="loader__heart" aria-hidden="true">
+        <svg viewBox="0 0 100 100" class="loader__heart-svg">
+          <path d="M50 88 C20 65, 5 45, 20 28 C32 15, 48 22, 50 35 C52 22, 68 15, 80 28 C95 45, 80 65, 50 88 Z"/>
+        </svg>
+        <div class="loader__glow"></div>
+      </div>
+      <p class="loader__text">Preparing your surprise...</p>
+      <div class="loader__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="loader-bar">
+        <div class="loader__bar-fill" id="loader-fill"></div>
+      </div>
+      <span class="loader__percent" id="loader-percent">0%</span>
+    </div>
+  </div>
+
+  <!-- Living background -->
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-aurora"></div>
+    <div class="bg-moon"></div>
+    <div class="bg-clouds" id="bg-clouds"></div>
+    <canvas id="bg-canvas" class="bg-canvas"></canvas>
+    <div class="bg-vignette"></div>
+  </div>
+
+  <!-- Floating characters stage -->
+  <div id="creature-stage" class="creature-stage" aria-hidden="true"></div>
+
+  <!-- Navbar -->
+  <header class="site-header">
+    <nav class="navbar glass" id="navbar" aria-label="Primary">
+      <a href="#home" class="navbar__brand" data-magnetic>
+        <span class="navbar__logo" aria-hidden="true">✦</span>
+        <span class="navbar__title">For You</span>
+      </a>
+      <button class="navbar__toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar__menu" id="nav-menu">
+        <li><a href="#home" class="navbar__link" data-section="home">Home</a></li>
+        <li><a href="#story" class="navbar__link" data-section="story">Wishes</a></li>
+        <li><a href="#gallery" class="navbar__link" data-section="gallery">Gallery</a></li>
+        <li><a href="#memories" class="navbar__link" data-section="memories">Memories</a></li>
+        <li><a href="#games" class="navbar__link" data-section="games">Games</a></li>
+        <li><a href="#cake" class="navbar__link" data-section="cake">Birthday Cake</a></li>
+        <li><a href="#gift" class="navbar__link" data-section="gift">Gift</a></li>
+        <li><a href="#finale" class="navbar__link" data-section="finale">Final Surprise</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section id="home" class="section hero" data-parallax>
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="container hero__inner">
+        <p class="eyebrow reveal">A little universe · just for you</p>
+        <h1 class="hero__title reveal">
+          <span class="hero__title-line">Happy Birthday</span>
+          <span class="hero__heart" aria-hidden="true">❤️</span>
+        </h1>
+        <div class="hero__checkin glass reveal" id="hero-checkin" aria-live="polite">
+          <p class="hero__checkin-context">
+            Hey <span class="hero__you">you</span>… yes, only you.
+            This little universe was made for your smile, your soft chaos, and the way you light up every room.
+          </p>
+          <p class="hero__checkin-q" lang="mr">कशी आहेस मग, cuttie? 💕</p>
+          <p class="hero__checkin-hint">Pick a soft reply — only happy answers allowed</p>
+          <div class="hero__replies" role="group" aria-label="Positive replies">
+            <button type="button" class="btn btn--primary hero__reply" data-reply="mast" data-ripple>मी मस्त आहे! ✨</button>
+            <button type="button" class="btn btn--ghost hero__reply" data-reply="khush" data-ripple>मी तर एकदम खुश आहे… 💖</button>
+            <button type="button" class="btn btn--ghost hero__reply" data-reply="best" data-ripple>मी तर एकदम छान! 🌙</button>
+          </div>
+        </div>
+        <div class="hero__message glass reveal" id="hero-message" hidden aria-live="polite">
+          <p id="typed-text" class="typed-text"></p>
+          <span class="typed-caret" aria-hidden="true"></span>
+        </div>
+        <div class="hero__actions reveal" id="hero-actions" hidden>
+          <a href="#story" class="btn btn--primary" data-magnetic data-ripple>Begin the Magic</a>
+          <button type="button" class="btn btn--ghost" id="surprise-toast-btn" data-magnetic data-ripple>Secret Sparkle</button>
+        </div>
+      </div>
+      <div class="hero-scroll-arrows hero-scroll-arrows--left" aria-hidden="true">
+        <span class="hero-scroll-arrows__track">
+          <span class="hero-scroll-arrows__icon">↓</span>
+        </span>
+      </div>
+      <div class="hero-scroll-arrows hero-scroll-arrows--right" aria-hidden="true">
+        <span class="hero-scroll-arrows__track">
+          <span class="hero-scroll-arrows__icon">↓</span>
+        </span>
+      </div>
+      <div class="scroll-hint" aria-hidden="true">
+        <span>Scroll</span>
+        <div class="scroll-hint__line"></div>
+      </div>
+    </section>
+
+    <!-- BIRTHDAY WISH CARDS -->
+    <section id="story" class="section section--wish-cards">
+      <div class="container">
+        <header class="section-header reveal">
+          <p class="eyebrow">Section I</p>
+          <h2>Birthday Wishes for Vishuu</h2>
+          <p class="section-lead">A little stack of flirty magic, written just for you.</p>
+        </header>
+        <div class="wish-cards" id="wish-cards">
+          {% for card in birthday_cards %}
+          <article class="wish-card glass reveal" data-mood="{{ card.mood }}" tabindex="0">
+            <span class="wish-card__badge">{{ card.badge }}</span>
+            <h3 class="wish-card__title">{{ card.title }}</h3>
+            <p class="wish-card__text">{{ card.text }}</p>
+          </article>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- REASONS -->
+    <section id="reasons" class="section">
+      <div class="container">
+        <header class="section-header reveal">
+          <p class="eyebrow">Section II</p>
+          <h2>Reasons You're Amazing</h2>
+          <p class="section-lead">A non-exhaustive, dangerously cute list.</p>
+        </header>
+        <div class="reasons-grid" id="reasons-grid">
+          {% for reason in reasons %}
+          <article class="reason-card glass reveal" data-mood="{{ reason.mood }}" tabindex="0">
+            <div class="reason-card__inner">
+              <div class="reason-card__front">
+                <span class="reason-card__index">0{{ forloop.counter }}</span>
+                <h3>{{ reason.title }}</h3>
+                <p>Hover · Flip · Feel</p>
+              </div>
+              <div class="reason-card__back">
+                <h3>{{ reason.title }}</h3>
+                <p>{{ reason.text }}</p>
+              </div>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- TIMELINE / MEMORIES -->
+    <section id="memories" class="section section--timeline">
+      <div class="container">
+        <header class="section-header reveal">
+          <p class="eyebrow">Section III</p>
+          <h2>Memory Timeline</h2>
+          <p class="section-lead">Chapters of us, written in starlight.</p>
+        </header>
+        <ol class="timeline" id="timeline">
+          {% for item in timeline %}
+          <li class="timeline__item reveal">
+            <div class="timeline__marker" aria-hidden="true"></div>
+            <article class="timeline__card glass">
+              <span class="timeline__era">{{ item.era }}</span>
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.text }}</p>
+            </article>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+    </section>
+
+    <!-- WISHES -->
+    <section id="wishes" class="section section--wishes">
+      <div class="container">
+        <header class="section-header reveal">
+          <p class="eyebrow">Section IV</p>
+          <h2>Birthday Wishes</h2>
+          <p class="section-lead">One wish at a time — like shooting stars.</p>
+        </header>
+        <div class="wish-stage glass reveal" id="wish-stage" aria-live="polite">
+          <p class="wish-text" id="wish-text">{{ wishes.0 }}</p>
+          <div class="wish-controls">
+            <button type="button" class="btn btn--ghost btn--sm" id="wish-prev" data-ripple aria-label="Previous wish">←</button>
+            <span class="wish-counter"><span id="wish-index">1</span> / {{ wishes|length }}</span>
+            <button type="button" class="btn btn--ghost btn--sm" id="wish-next" data-ripple aria-label="Next wish">→</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAMES -->
+    <section id="games" class="section section--games">
+      <div class="container">
+        <header class="section-header reveal">
+          <p class="eyebrow">Section V</p>
+          <h2>Mini Games</h2>
+          <p class="section-lead">Play. Win hearts. Spoil yourself rotten.</p>
+        </header>
+        <div class="games-tabs" role="tablist" aria-label="Mini games">
+          <button type="button" class="games-tab is-active" role="tab" aria-selected="true" data-game="catch">Heart Collector</button>
+          <button type="button" class="games-tab" role="tab" aria-selected="false" data-game="memory">Puzzle Birthday Bash</button>
+        </div>
+        <div class="game-panel glass" id="game-panel">
+          <div class="game-hud">
+            <span>Score: <strong id="game-score">0</strong></span>
+            <span id="game-status">Pick a game & play</span>
+            <button type="button" class="btn btn--primary btn--sm" id="game-start" data-ripple>Start</button>
+          </div>
+          <canvas id="game-canvas" width="800" height="480" aria-label="Mini game canvas"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="section section--gallery">
+      <div class="container">
+        <header class="section-header reveal">
+          <p class="eyebrow">Section VI</p>
+          <h2>Photo Gallery</h2>
+          <p class="section-lead">Floating polaroids from a dreamy scrapbook.</p>
+        </header>
+        <div class="polaroid-wall" id="polaroid-wall">
+          {% for photo in gallery %}
+          <div class="scrap-card polaroid" data-index="{{ forloop.counter0 }}">
+            <button type="button" class="card__inner" aria-label="Open photo: {{ photo.caption }}">
+              <div class="card__tape" aria-hidden="true"></div>
+              <div class="card__photo">
+                <div
+                  class="card__photo-bg p{{ forloop.counter }} polaroid__photo"
+                  style="--photo-url: url('{% static photo.src %}')"
+                  aria-hidden="true"
+                ></div>
+                <div class="card__grade" aria-hidden="true"></div>
+                <div class="card__grain" aria-hidden="true"></div>
+                <div class="card__sheen" aria-hidden="true"></div>
+              </div>
+              <div class="card__glint" aria-hidden="true"></div>
+              <div class="card__caption">
+                <p class="polaroid__caption">{{ photo.caption }}</p>
+              </div>
+            </button>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- MUSIC -->
+    <section id="music" class="section section--music">
+      <div class="container">
+        <header class="section-header reveal">
+          <p class="eyebrow">Section VII</p>
+          <h2>Music</h2>
+          <p class="section-lead">Soft magical tones for your birthday sky.</p>
+        </header>
+        <div class="music-player glass reveal" id="music-player">
+          <div class="music-player__info">
+            <h3 id="track-title">Moonlit Lullaby</h3>
+            <p id="track-meta">Procedural dreamscape · Volume ready</p>
+          </div>
+          <canvas id="visualizer" class="music-player__viz" width="600" height="80" aria-hidden="true"></canvas>
+          <div class="music-player__controls">
+            <button type="button" class="btn btn--ghost btn--sm" id="music-prev" aria-label="Previous track" data-ripple>⏮</button>
+            <button type="button" class="btn btn--primary" id="music-toggle" aria-label="Play music" data-ripple>▶ Play</button>
+            <button type="button" class="btn btn--ghost btn--sm" id="music-next" aria-label="Next track" data-ripple>⏭</button>
+            <label class="volume-control">
+              <span class="sr-only">Volume</span>
+              <input type="range" id="music-volume" min="0" max="1" step="0.01" value="0.45" aria-label="Volume">
+            </label>
+          </div>
+          <ul class="playlist" id="playlist" aria-label="Playlist"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CAKE -->
+    <section id="cake" class="section section--cake">
+      <div class="container">
+        <header class="section-header reveal">
+          <p class="eyebrow">Section VIII</p>
+          <h2>Birthday Cake</h2>
+          <p class="section-lead">Make a wish… then blow out the candles.</p>
+        </header>
+        <div class="cake-stage reveal" id="cake-stage">
+          <div class="cake" id="cake" role="img" aria-label="Magical three-tier birthday cake with candles">
+            <div class="cake__plate"></div>
+            <div class="cake__tier cake__tier--3"></div>
+            <div class="cake__tier cake__tier--2"></div>
+            <div class="cake__tier cake__tier--1"></div>
+            <div class="cake__candles" id="candles">
+              <button type="button" class="candle" data-lit="true" aria-label="Blow out candle 1"><span class="candle__flame"></span><span class="candle__smoke"></span></button>
+              <button type="button" class="candle" data-lit="true" aria-label="Blow out candle 2"><span class="candle__flame"></span><span class="candle__smoke"></span></button>
+              <button type="button" class="candle" data-lit="true" aria-label="Blow out candle 3"><span class="candle__flame"></span><span class="candle__smoke"></span></button>
+              <button type="button" class="candle" data-lit="true" aria-label="Blow out candle 4"><span class="candle__flame"></span><span class="candle__smoke"></span></button>
+              <button type="button" class="candle" data-lit="true" aria-label="Blow out candle 5"><span class="candle__flame"></span><span class="candle__smoke"></span></button>
+            </div>
+          </div>
+          <p class="cake__hint" id="cake-hint">Click each candle to blow it out</p>
+          <button type="button" class="btn btn--primary" id="blow-all" data-magnetic data-ripple>Blow All Candles 🎂</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- GIFT / EASTER EGGS -->
+    <section id="gift" class="section section--gift">
+      <div class="container">
+        <header class="section-header reveal">
+          <p class="eyebrow">Secret Gifts</p>
+          <h2>Hidden Treasures</h2>
+          <p class="section-lead">Tap the glowing gifts. Surprises await.</p>
+        </header>
+        <div class="gifts-row" id="gifts-row">
+          <button type="button" class="gift-box reveal" data-gift="1" aria-label="Open secret gift 1">
+            <span class="gift-box__lid"></span>
+            <span class="gift-box__body"></span>
+            <span class="gift-box__bow"></span>
+          </button>
+          <button type="button" class="gift-box reveal" data-gift="2" aria-label="Open secret gift 2">
+            <span class="gift-box__lid"></span>
+            <span class="gift-box__body"></span>
+            <span class="gift-box__bow"></span>
+          </button>
+          <button type="button" class="gift-box reveal" data-gift="3" aria-label="Open secret gift 3">
+            <span class="gift-box__lid"></span>
+            <span class="gift-box__body"></span>
+            <span class="gift-box__bow"></span>
+          </button>
+        </div>
+        <p class="gift-message glass" id="gift-message" aria-live="polite">Choose a gift…</p>
+      </div>
+    </section>
+
+    <!-- FINALE -->
+    <section id="finale" class="section section--finale">
+      <div class="container finale__inner">
+        <header class="section-header reveal">
+          <p class="eyebrow">Final Surprise</p>
+          <h2>The Magical Ending</h2>
+        </header>
+        <button type="button" class="btn btn--primary btn--lg reveal" id="finale-trigger" data-magnetic data-ripple>
+          Unlock the Final Surprise ✨
+        </button>
+        <div class="finale-message" id="finale-message" hidden>
+          <p class="finale-message__script">You deserve all the happiness in this universe.</p>
+          <p class="finale-message__title">Happy Birthday Vishhuukhhaa ❤️</p>
+        </div>
+      </div>
+      <canvas id="finale-canvas" class="finale-canvas" aria-hidden="true"></canvas>
+    </section>
+  </main>
+
+  <!-- Floating music mini player -->
+  <aside class="float-player glass" id="float-player" aria-label="Floating music controls">
+    <button type="button" id="float-play" class="float-player__btn" aria-label="Toggle music">♪</button>
+    <span class="float-player__label" id="float-label">Music</span>
+  </aside>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo lightbox">
+    <button type="button" class="lightbox__close" id="lightbox-close" aria-label="Close lightbox">×</button>
+    <div class="lightbox__content">
+      <div class="lightbox__photo" id="lightbox-photo"></div>
+      <p class="lightbox__caption" id="lightbox-caption"></p>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- Confetti / FX overlay -->
+  <canvas id="fx-canvas" class="fx-canvas" aria-hidden="true"></canvas>
+
+  <!-- Wishes JSON for JS (safe encoding) -->
+  {{ wishes|json_script:"wishes-json" }}
+  {{ gallery|json_script:"gallery-json" }}
+
+  <!-- Libraries via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
+
+  <script src="{% static 'birthday/js/utils.js' %}" defer></script>
+  <script src="{% static 'birthday/js/audio.js' %}" defer></script>
+  <script src="{% static 'birthday/js/loader.js' %}" defer></script>
+  <script src="{% static 'birthday/js/cursor.js' %}" defer></script>
+  <script src="{% static 'birthday/js/background.js' %}" defer></script>
+  <script src="{% static 'birthday/js/creatures.js' %}" defer></script>
+  <script src="{% static 'birthday/js/interactions.js' %}" defer></script>
+  <script src="{% static 'birthday/js/scroll.js' %}" defer></script>
+  <script src="{% static 'birthday/js/sections.js' %}" defer></script>
+  <script src="{% static 'birthday/js/games.js' %}" defer></script>
+  <script src="{% static 'birthday/js/cake.js' %}" defer></script>
+  <script src="{% static 'birthday/js/music.js' %}" defer></script>
+  <script src="{% static 'birthday/js/finale.js' %}" defer></script>
+  <script src="{% static 'birthday/js/main.js' %}" defer></script>
+</body>
+</html>

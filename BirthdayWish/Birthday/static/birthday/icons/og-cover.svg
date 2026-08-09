@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Happy Birthday Magical Surprise">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B1026"/>
+      <stop offset="50%" stop-color="#1E1B4B"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="t" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#A855F7"/>
+      <stop offset="50%" stop-color="#F472B6"/>
+      <stop offset="100%" stop-color="#EC4899"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="200" cy="120" r="80" fill="#7C3AED" opacity="0.25"/>
+  <circle cx="1000" cy="480" r="120" fill="#EC4899" opacity="0.2"/>
+  <text x="600" y="300" text-anchor="middle" font-family="Georgia, serif" font-size="72" fill="url(#t)">Happy Birthday</text>
+  <text x="600" y="380" text-anchor="middle" font-family="Georgia, serif" font-size="36" fill="#F8F7FF" opacity="0.85">A little universe created just for you</text>
+</svg>

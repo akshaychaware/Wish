@@ -1,0 +1,82 @@
+/* Responsive refinements */
+@media (max-width: 720px) {
+  body {
+    cursor: auto;
+  }
+
+  .cursor,
+  .cursor-trail {
+    display: none !important;
+  }
+
+  .hero__checkin,
+  .hero__message {
+    min-height: 10rem;
+    text-align: center;
+  }
+
+  .hero__replies {
+    justify-content: center;
+  }
+
+  .hero-scroll-arrows {
+    top: 22%;
+    bottom: 14%;
+    width: 2.5rem;
+  }
+
+  .hero-scroll-arrows__icon {
+    font-size: 2rem;
+  }
+
+  .float-player__label {
+    display: none;
+  }
+
+  .creature {
+    width: 48px;
+    height: 48px;
+    opacity: 0.85;
+  }
+
+  .section {
+    padding: 3.5rem 0;
+  }
+
+  .wish-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: min(100% - 1.5rem, 1120px);
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .games-tab {
+    font-size: 0.78rem;
+    padding: 0.45rem 0.75rem;
+  }
+}
+
+
+/* Safe areas for notched phones */
+@supports (padding: max(0px)) {
+  .site-header {
+    padding-top: max(0.5rem, env(safe-area-inset-top));
+  }
+
+  .float-player {
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
