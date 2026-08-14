@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'Birthday.middleware.EventOverMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -109,6 +110,10 @@ STORAGES = {
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# When True, the public site shows only the Event Over page.
+# Set to False (or env EVENT_OVER=false) to restore the birthday experience.
+EVENT_OVER = os.environ.get('EVENT_OVER', 'true').lower() in ('1', 'true', 'yes')
 
 # Security defaults (tighten further in production)
 SECURE_CONTENT_TYPE_NOSNIFF = True

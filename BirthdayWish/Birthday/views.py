@@ -1,5 +1,6 @@
 """Views for the Magical Birthday Surprise experience."""
 
+from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_GET
@@ -96,9 +97,20 @@ GALLERY = [
 ]
 
 
+def _event_over_response(request):
+    """Render the Event Over blocker (no birthday experience)."""
+    response = render(request, 'birthday/event_over.html')
+    response['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response['Pragma'] = 'no-cache'
+    return response
+
+
 @require_GET
 def home(request):
-    """Render the full birthday surprise experience."""
+    """Render Event Over when gated; otherwise the full birthday experience."""
+    if settings.EVENT_OVER:
+        return _event_over_response(request)
+
     context = {
         'wishes': WISHES,
         'birthday_cards': BIRTHDAY_CARDS,
@@ -117,10 +129,35 @@ def home(request):
 
 
 @require_GET
+def event_over(request, unused_path=None):
+    """Public catch-all while EVENT_OVER is True."""
+    return _event_over_response(request)
+
+
+@require_GET
 def manifest(request):
     """PWA web app manifest."""
-    return JsonResponse(
-        {
+    if settings.EVENT_OVER:
+        payload = {
+            "name": "The Magic Has Ended",
+            "short_name": "Event Over",
+            "description": "This little surprise has come to an end.",
+            "start_url": "/",
+            "display": "standalone",
+            "background_color": "#0B1026",
+            "theme_color": "#0B1026",
+            "lang": "en",
+            "icons": [
+                {
+                    "src": "/static/birthday/icons/favicon.svg",
+                    "sizes": "any",
+                    "type": "image/svg+xml",
+                    "purpose": "any maskable",
+                }
+            ],
+        }
+    else:
+        payload = {
             "name": "Birthday Surprise — A Magical Universe",
             "short_name": "Birthday Magic",
             "description": "An immersive, dreamy birthday surprise experience.",
@@ -137,6 +174,5 @@ def manifest(request):
                     "purpose": "any maskable",
                 }
             ],
-        },
-        content_type='application/manifest+json',
-    )
+        }
+    return JsonResponse(payload, content_type='application/manifest+json')
